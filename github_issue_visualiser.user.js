@@ -20,11 +20,11 @@ $.each(linkedIssues, function(index, issue) {
                         var fgcolor = "lightgray";
                         var bordercolor = "black";
                         if ($.inArray("state-open", classList) !== -1) {
-                            state = "&#10008;";
+                            state = "&#10007;";
                             fgcolor = "#cc0000";
                         }
                         else if ($.inArray("state-closed", classList) !== -1) {
-                            state = "&#10004;";
+                            state = "&#10003;";
                             fgcolor = "#339933";
                         }
                         $(issue).after($("<span style='" +

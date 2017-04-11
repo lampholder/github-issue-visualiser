@@ -12,8 +12,8 @@ $.each(linkedIssues, function(index, issue) {
         method:     'GET',
         url:        issue.href,
         onload:     function(response) {
-                        var respDoc     = $(response.responseText);
-                        var targetElems = respDoc.find ("div.state");
+                        var respDoc = $(response.responseText);
+                        var targetElems = respDoc.find("div.state");
                         var classList = $(targetElems[0]).attr('class').split(/\s+/);
                         var state = "UNKNOWN";
                         var fgcolor = "lightgray";

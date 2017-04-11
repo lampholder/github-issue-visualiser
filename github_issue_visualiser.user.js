@@ -16,9 +16,7 @@ $.each(linkedIssues, function(index, issue) {
                         var targetElems = respDoc.find ("div.state");
                         var classList = $(targetElems[0]).attr('class').split(/\s+/);
                         var state = "UNKNOWN";
-                        var bgcolor = "darkgray";
                         var fgcolor = "lightgray";
-                        var bordercolor = "black";
                         if ($.inArray("state-open", classList) !== -1) {
                             state = "&#10007;";
                             fgcolor = "#cc0000";

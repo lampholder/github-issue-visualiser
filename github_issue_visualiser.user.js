@@ -32,14 +32,12 @@ $.each(linkedIssues, function(_, issue) {
                             return /Projects/.test($.trim(form.innerText));
                         });
                         var projects = $(matchingForms[0]);
-                        console.log(['ps', projects.find('p').toArray()]);
                         var statuses = $.map(projects.find('p').toArray(), function(project_status) {
                             var components = $.trim(project_status.innerText).split('\n');
                             var status = components[0].substring(0, components[0].lastIndexOf(' '));
                             var project = $.trim(components[1]);
                             return {'project': project, 'status': status};
                         });
-                        console.log(['statuses', statuses]);
                         if (statuses.length === 0) {
                             var state_element = $("<span style='" +
                                                   "font-weight: bold; color: " + fgcolor + "; margin-left: 6px; " +
@@ -59,7 +57,6 @@ $.each(linkedIssues, function(_, issue) {
                             var border = 'black';
                             var text = 'black';
                             if (status in colours) {
-                                console.log('it is there');
                                 background = colours[status].background;
                                 border = colours[status].border;
                                 text = colours[status].text;

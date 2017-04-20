@@ -13,17 +13,17 @@ $.each(linkedIssues, function(_, issue) {
         url:        issue.href,
         onload:     function(response) {
                         var respDoc = $(response.responseText);
-                        var targetElems = respDoc.find("div.state");
+                        var targetElems = respDoc.find("div.State");
                         var classList = $(targetElems[0]).attr('class').split(/\s+/);
                         var state = "UNKNOWN";
                         var bgcolor = "darkgray";
                         var fgcolor = "lightgray";
                         var bordercolor = "black";
-                        if ($.inArray("state-open", classList) !== -1) {
+                        if ($.inArray("State--green", classList) !== -1) {
                             state = "&#10007;";
                             fgcolor = "#cc0000";
                         }
-                        else if ($.inArray("state-closed", classList) !== -1) {
+                        else if ($.inArray("State--red", classList) !== -1) {
                             state = "&#10003;";
                             fgcolor = "#339933";
                         }

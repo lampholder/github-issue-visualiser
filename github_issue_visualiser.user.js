@@ -14,18 +14,64 @@ $.each(linkedIssues, function(_, issue) {
         onload:     function(response) {
                         var respDoc = $(response.responseText);
                         var targetElems = respDoc.find("div.State");
-                        var classList = $(targetElems[0]).attr('class').split(/\s+/);
-                        var state = "UNKNOWN";
-                        var bgcolor = "darkgray";
-                        var fgcolor = "lightgray";
-                        var bordercolor = "black";
-                        if ($.inArray("State--green", classList) !== -1) {
-                            state = "&#10007;";
-                            fgcolor = "#cc0000";
+                        var type_match = /https?:\/\/github.com\/.+?\/.+?\/(.+?)\/[0-9]+/.exec(issue.href)[1];
+                        switch(type_match) {
+                            case 'pull':
+                                type = 'PR';
+                                break;
+                            case 'issues':
+                                type = 'issue';
+                                break;
                         }
-                        else if ($.inArray("State--red", classList) !== -1) {
-                            state = "&#10003;";
-                            fgcolor = "#339933";
+                        var state = $.trim($(targetElems[0]).text());
+                        if (type == "issue") {
+                            switch(state) {
+                                case 'Open':
+                                    state_text = "&#10007;";
+                                    fgcolor = "#cc0000";
+                                    tooltip = "This issue is open :(";
+                                    break;
+                                case 'Closed':
+                                    state_text = "&#10003;";
+                                    fgcolor = "#339933";
+                                    tooltip = "This issue is closed!";
+                                    break;
+                                default:
+                                    state_text = "(" + state + ")";
+                                    fgcolor = "black";
+                                    tooltip = "Unparsed issue status :S";
+                                    break;
+                            }
+                            state_element = $("<span style='" +
+                                                  "font-weight: bold; color: " + fgcolor + "; margin-left: 6px; " +
+                                                  "' title='" + tooltip + "'>" + state_text + "</span>");
+                        }
+                        else if (type == "PR") {
+                            switch(state) {
+                                case 'Open':
+                                    state_text = "&#8230;";
+                                    fgcolor = "#339933";
+                                    tooltip = "This PR is open!";
+                                    break;
+                                case 'Closed':
+                                    state_text = "&#10007;&#10007;";
+                                    fgcolor = "#cc0000";
+                                    tooltip = "This PR was closed :(";
+                                    break;
+                                case 'Merged':
+                                    state_text = "&#10003;";
+                                    fgcolor = "#6f42c1;";
+                                    tooltip = "This PR was merged :D";
+                                    break;
+                                default:
+                                    state_text = "(" + state + ")";
+                                    fgcolor = "black";
+                                    tooltip = "Unparsed PR status :S";
+                                    break;
+                            }
+                            state_element = $("<span style='" +
+                                                  "font-weight: bold; color: " + fgcolor + "; margin-left: 6px; " +
+                                                  "' title='" + tooltip + "'>" + state_text + "</span>");
                         }
                         var forms = respDoc.find("form");
                         var matchingForms = $.grep(forms, function(form) {
@@ -39,9 +85,6 @@ $.each(linkedIssues, function(_, issue) {
                             return {'project': project, 'status': status};
                         });
                         if (statuses.length === 0) {
-                            var state_element = $("<span style='" +
-                                                  "font-weight: bold; color: " + fgcolor + "; margin-left: 6px; " +
-                                                  "'>" + state + "</span>");
                             $(issue).after(state_element);
                         }
                         var colours = {
@@ -70,3 +113,4 @@ $.each(linkedIssues, function(_, issue) {
                     }
     });
 });
+

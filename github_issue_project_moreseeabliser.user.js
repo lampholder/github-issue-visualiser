@@ -26,14 +26,16 @@
     var statuses = $.map(projects.find('p').toArray(), function(project_status) {
         var project_status_text = $.trim(project_status.innerText);
         var project = $(project_status).find('a').text();
+        var link = $(project_status).find('a').href;
         var status_in = $.trim(project_status_text.substr(0, project_status_text.lastIndexOf(project)));
         var status = status_in.substr(0, status_in.length - 3);
-        return {'project': project, 'status': status};
+        return {'project': project, 'status': status, 'link': link};
     });
 
     if (statuses.length == 1) {
         var status = statuses[0].status;
         var project = statuses[0].project;
+        var link = statuses[0].link;
         var lookup_status = status.toUpperCase();
         var bgcolour = 'darkgray';
         var fgcolour = 'white';
@@ -43,6 +45,8 @@
         }
         var status_element = $('div#show_issue').find('div.TableObject-item')[0];
         $(status_element).after($("<div title='" + project + "' class='TableObject-item'><div class='State' style='background-color: " + bgcolour + "; color: " + fgcolour + "'>" + statuses[0].status + "</div></div>"));
+
+        $('span.js-issue-title').before($('<span><a href="' + link + '">' + project + '</a>:</span>'));
     }
 
 })();

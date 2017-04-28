@@ -89,9 +89,10 @@ $.each(linkedIssues, function(_, issue) {
                         var statuses = $.map(projects.find('p').toArray(), function(project_status) {
                             var project_status_text = $.trim(project_status.innerText);
                             var project = $(project_status).find('a').text();
+                            var link = $(project_status).find('a').href;
                             var status_in = $.trim(project_status_text.substr(0, project_status_text.lastIndexOf(project)));
                             var status = status_in.substr(0, status_in.length - 3);
-                            return {'project': project, 'status': status};
+                            return {'project': project, 'status': status, 'link': link};
                         });
                         if (statuses.length === 0) {
                             $(issue).after(state_element);
@@ -99,7 +100,6 @@ $.each(linkedIssues, function(_, issue) {
 
                         $.each(statuses, function(_, project_status) {
                             var status = project_status.status.toUpperCase();
-                            console.log("[" + status + "]");
                             var background = 'white';
                             var border = 'black';
                             var text = 'black';

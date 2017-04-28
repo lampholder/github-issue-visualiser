@@ -5,6 +5,14 @@
 // @grant       GM_xmlhttpRequest
 // ==/UserScript==
 
+var colours = {
+    'NEEDS SPEC': {'border': '#E57373', 'background': '#FFCDD2', 'text': '#880E4F'},
+    'NEEDS UX DESIGN': {'border': '#BA68C8', 'background': '#E1BEE7', 'text': '#4A148C'},
+    'READY TO START': {'border': '#FFF176', 'background': '#FFF9C4', 'text': '#F57F17'},
+    'IN DEVELOPMENT': {'border': '#64B5F6', 'background': '#BBDEFB', 'text': '#0D47A1'},
+    'DONE': {'border': '#81C784', 'background': '#C8E6C9', 'text': '#1B5E20'}
+};
+
 linkedIssues = $.find("a.issue-link");
 
 $.each(linkedIssues, function(_, issue) {
@@ -79,23 +87,19 @@ $.each(linkedIssues, function(_, issue) {
                         });
                         var projects = $(matchingForms[0]);
                         var statuses = $.map(projects.find('p').toArray(), function(project_status) {
-                            var components = $.trim(project_status.innerText).split('\n');
-                            var status = components[0].substring(0, components[0].lastIndexOf(' '));
-                            var project = $.trim(components[1]);
+                            var project_status_text = $.trim(project_status.innerText);
+                            var project = $(project_status).find('a').text();
+                            var status_in = $.trim(project_status_text.substr(0, project_status_text.lastIndexOf(project)));
+                            var status = status_in.substr(0, status_in.length - 3);
                             return {'project': project, 'status': status};
                         });
                         if (statuses.length === 0) {
                             $(issue).after(state_element);
                         }
-                        var colours = {
-                                       'NEEDS SPEC': {'border': '#E57373', 'background': '#FFCDD2', 'text': '#880E4F'},
-                                       'NEEDS UX DESIGN': {'border': '#BA68C8', 'background': '#E1BEE7', 'text': '#4A148C'},
-                                       'READY TO START': {'border': '#FFF176', 'background': '#FFF9C4', 'text': '#F57F17'},
-                                       'IN PROGRESS': {'border': '#64B5F6', 'background': '#BBDEFB', 'text': '#0D47A1'},
-                                       'DONE': {'border': '#81C784', 'background': '#C8E6C9', 'text': '#1B5E20'}
-                                      };
+
                         $.each(statuses, function(_, project_status) {
                             var status = project_status.status.toUpperCase();
+                            console.log("[" + status + "]");
                             var background = 'white';
                             var border = 'black';
                             var text = 'black';

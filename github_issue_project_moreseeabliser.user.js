@@ -26,7 +26,7 @@
     var statuses = $.map(projects.find('p').toArray(), function(project_status) {
         var project_status_text = $.trim(project_status.innerText);
         var project = $(project_status).find('a').text();
-        var link = $(project_status).find('a').href;
+        var link = $(project_status).find('a')[0].href;
         var status_in = $.trim(project_status_text.substr(0, project_status_text.lastIndexOf(project)));
         var status = status_in.substr(0, status_in.length - 3);
         return {'project': project, 'status': status, 'link': link};
